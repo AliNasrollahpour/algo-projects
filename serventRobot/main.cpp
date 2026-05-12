@@ -117,6 +117,14 @@ point findBest(const vector<vector<point> >& map, const vector<vector<valuePair>
     return map[bx][by];
 }
 
+vector<point> path(const vector<vector<point> >& map, const vector<vector<valuePair> >& valueMap){
+    vector<point> path;
+    path.push_back(findBest(map, valueMap));
+    while(valueMap[path.back().dx][path.back().dx].parent)
+        path.push_back(valueMap[path.back().dx][path.back().dx].parent);
+    return path;
+}
+
 void print(){
     //--
 }
