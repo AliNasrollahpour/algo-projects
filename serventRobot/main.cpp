@@ -1,5 +1,6 @@
 #include <cstddef>
 #include <iostream>
+#include <ostream>
 #include <string>
 #include <vector>
 using namespace std;
@@ -117,7 +118,7 @@ point findBest(const vector<vector<point> >& map, const vector<vector<valuePair>
     return map[bx][by];
 }
 
-vector<point> path(const vector<vector<point> >& map, const vector<vector<valuePair> >& valueMap){
+vector<point> findPath(const vector<vector<point> >& map, const vector<vector<valuePair> >& valueMap){
     vector<point> path;
     path.push_back(findBest(map, valueMap));
     while(valueMap[path.back().dx][path.back().dx].parent)
@@ -125,8 +126,15 @@ vector<point> path(const vector<vector<point> >& map, const vector<vector<valueP
     return path;
 }
 
-void print(){
-    //--
+void print(const vector<point>& path, valuePair best, int initEnergy){
+    cout<<"Max customers served: "<<best.guestsServed<<endl
+        <<"Energy used: "<<initEnergy-best.energyLeft<<endl
+        <<"path:"<<endl;
+    for(int i=path.size()-1; i>0; i++){
+        cout<<"("<<path[i].x<<","<<path[i].y<<")"<<" -> ";
+        if(path[i].type==3) cout<<"T -> ";
+    }
+    cout<<cout<<"("<<path[0].x<<","<<path[0].y<<")";
 }
 
 int main(){
@@ -137,5 +145,6 @@ int main(){
     vector<vector<valuePair> > valueMap(map.size(), vector<valuePair>(map[0].size()));
     DFS(map, valueMap, start);
 
-    //--
+    vector<point> path=findPath(map, valueMap);
+    print(path, valueMap[path.back().x][path.back().y], initEnergy);
 }
