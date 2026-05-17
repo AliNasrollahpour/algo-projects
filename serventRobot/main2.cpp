@@ -1,5 +1,8 @@
 
+#include <iostream>
+#include <map>
 #include <string>
+#include <vector>
 
 using namespace std;
 
@@ -65,3 +68,31 @@ state* compareStates(state* a, state* b){
     if(a->customersVisited==b->customersVisited && a->remainingEnergy>b->remainingEnergy) return a;
     return b;
 }
+
+void buildStateTable(vector<vector<point> >& grid, map<pair<int,int>, pair<int,int> >& teleMap, int n, int m){
+    grid.resize(n, vector<point>(m));
+    int t=0;
+    for(int i=0; i<n; i++){
+        for(int j=0; j<m; j++){
+            string token;
+            cin>>token;
+            grid[i][j].x=i;
+            grid[i][j].y=j;
+            grid[i][j].id=token;
+            setInaccessible(grid[i][j].st);   // initially all inaccessible
+            if(token=="T") t++;
+        }
+    }
+    string buffer;
+    getline(cin, buffer);   // clear rest of line
+    getline(cin, buffer);   // empty line before teleport definitions
+    string line;
+    while(t--){
+        getline(cin, line);
+        if(line.empty()) continue;
+        int x1, y1, x2, y2;
+        if(sscanf(line.c_str(), "Teleport:(%d,%d) -> (%d,%d)", &x1, &y1, &x2, &y2)==4)
+            teleMap[make_pair(x2, y2)]=make_pair(x1, y1);
+    }
+}
+
