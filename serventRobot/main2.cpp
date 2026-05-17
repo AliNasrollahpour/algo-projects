@@ -1,8 +1,12 @@
-
 #include <iostream>
-#include <map>
-#include <string>
 #include <vector>
+#include <string>
+#include <map>
+#include <sstream>
+#include <algorithm>
+#include <cstdio>
+#include <queue>
+#include <utility>
 
 using namespace std;
 
@@ -91,7 +95,7 @@ void buildStateTable(vector<vector<point> >& grid, map<pair<int,int>, pair<int,i
         getline(cin, line);
         if(line.empty()) continue;
         int x1, y1, x2, y2;
-        if(sscanf(line.c_str(), "Teleport:(%d,%d) -> (%d,%d)", &x1, &y1, &x2, &y2)==4)
+        if(sscanf(line.c_str(), "Teleport: (%d,%d) -> (%d,%d)", &x1, &y1, &x2, &y2)==4)
             teleMap[make_pair(x2, y2)]=make_pair(x1, y1);
     }
 }
@@ -272,3 +276,18 @@ int main(){
 
     return 0;
 }
+
+/*
+
+7 5 6
+S . . X .
+. . . X .
+. T G . .
+. . G . .
+. . . . .
+. . . . .
+. . G G G
+
+Teleport: (2,1) -> (5,2)
+
+*/
