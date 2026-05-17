@@ -127,9 +127,47 @@ void propagateStates(vector<vector<point> >& grid, map<pair<int,int>, pair<int,i
         // Normal moves
         if(grid[i][j].id!="T"){
             // Move down
-
+            if(i+1<n){
+                int ni=i+1, nj=j;
+                if(grid[ni][nj].id!="X"){
+                    state cand=curState;
+                    if(grid[ni][nj].id!="S") cand.remainingEnergy--;
+                    if(cand.remainingEnergy >= 0){
+                        if(grid[ni][nj].id=="G") cand.customersVisited++;
+                        state& existing=grid[ni][nj].st;
+                        if(isInaccessible(existing) || cand.customersVisited>existing.customersVisited ||
+                           (cand.customersVisited==existing.customersVisited && cand.remainingEnergy>existing.remainingEnergy)
+                        ){
+                            existing=cand;
+                            existing.sourceX=i;
+                            existing.sourceY=j;
+                            existing.sourceTel=false;
+                            q.push(make_pair(ni, nj));
+                        }
+                    }
+                }
+            }
             // Move right
-
+            if(j+1<m){
+                int ni=i, nj=j+1;
+                if(grid[ni][nj].id!="X"){
+                    state cand=curState;
+                    if(grid[ni][nj].id!="S") cand.remainingEnergy--;
+                    if(cand.remainingEnergy >= 0){
+                        if(grid[ni][nj].id=="G") cand.customersVisited++;
+                        state& existing=grid[ni][nj].st;
+                        if(isInaccessible(existing) || cand.customersVisited>existing.customersVisited ||
+                           (cand.customersVisited==existing.customersVisited && cand.remainingEnergy>existing.remainingEnergy)
+                        ){
+                            existing=cand;
+                            existing.sourceX=i;
+                            existing.sourceY=j;
+                            existing.sourceTel=false;
+                            q.push(make_pair(ni, nj));
+                        }
+                    }
+                }
+            }
         }
 
         // Teleport moves
