@@ -96,3 +96,43 @@ void buildStateTable(vector<vector<point> >& grid, map<pair<int,int>, pair<int,i
     }
 }
 
+void propagateStates(vector<vector<point> >& grid, map<pair<int,int>, pair<int,int> >& teleMap, int n, int m, int l){
+    // Build reverse teleport map: source -> list of destinations
+    map<pair<int,int>, vector<pair<int,int> > > teleOut;
+    map<pair<int,int>, pair<int,int> >::iterator it;
+    for(it=teleMap.begin(); it!=teleMap.end(); it++){
+        pair<int,int> dest=it->first;
+        pair<int,int> src=it->second;
+        teleOut[src].push_back(dest);
+    }
+
+    // Initialize start cell(0,0)
+    grid[0][0].st.customersVisited=0;
+    grid[0][0].st.remainingEnergy=l;
+    grid[0][0].st.sourceX=-1;
+    grid[0][0].st.sourceY=-1;
+    grid[0][0].st.sourceTel=false;
+
+    queue<pair<int,int> >q;
+    q.push(make_pair(0,0));
+
+    while(!q.empty()){
+        pair<int,int> cur=q.front();
+        q.pop();
+        int i=cur.first;
+        int j=cur.second;
+        state& curState=grid[i][j].st;
+        if(isInaccessible(curState)) continue;   // safety
+
+        // Normal moves
+        if(grid[i][j].id!="T"){
+            // Move down
+
+            // Move right
+
+        }
+
+        // Teleport moves
+
+    }
+}
