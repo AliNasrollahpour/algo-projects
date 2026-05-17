@@ -194,3 +194,63 @@ void propagateStates(vector<vector<point> >& grid, map<pair<int,int>, pair<int,i
         }
     }
 }
+
+struct result{
+    int customers;
+    int energy;
+    string path;
+};
+
+result findMaxCustomerPath(vector<vector<point> >& grid, int n, int m){
+    result ans;
+    ans.customers=0;
+    ans.energy=0;
+    ans.path="(0,0)";
+
+    int maxC=-1;
+    int maxE=-1;
+    int endX=0, endY=0;
+
+    for(int i=0; i<n; i++){
+        for(int j=0; j<m; j++){
+            if(isInaccessible(grid[i][j].st)) continue;
+            if(grid[i][j].st.customersVisited>maxC || (grid[i][j].st.customersVisited==maxC && grid[i][j].st.remainingEnergy>maxE)){
+                maxC=grid[i][j].st.customersVisited;
+                maxE=grid[i][j].st.remainingEnergy;
+                endX=i; endY=j;
+            }
+        }
+    }
+
+    if(maxC==-1) return ans;   // no path found
+
+    ans.customers=maxC;
+    ans.energy=maxE;
+
+    // Backtracking
+    vector<string> pathVec;
+    int curX=endX, curY=endY;
+    while(true){
+        pathVec.push_back(getPointString(curX, curY));
+        if(grid[curX][curY].id=="S") break;
+
+        if(grid[curX][curY].st.sourceTel) pathVec.push_back("T");
+
+        int nextX=grid[curX][curY].st.sourceX;
+        int nextY=grid[curX][curY].st.sourceY;
+        if(nextX==-1 && nextY==-1) break;   // just in case
+
+        curX=nextX;
+        curY=nextY;
+    }
+
+    reverse(pathVec.begin(), pathVec.end());
+    stringstream ss;
+    for(size_t i=0; i<pathVec.size(); i++){
+        ss<<pathVec[i];
+        if(i!=pathVec.size()-1) ss<<" -> ";
+    }
+    ans.path=ss.str();
+
+    return ans;
+}
