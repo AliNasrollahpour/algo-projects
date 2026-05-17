@@ -254,3 +254,21 @@ result findMaxCustomerPath(vector<vector<point> >& grid, int n, int m){
 
     return ans;
 }
+
+int main(){
+    int n, m, l;
+    cin>>n>>m>>l;
+
+    vector<vector<point> >grid;
+    map<pair<int,int>, pair<int,int> >teleMap;
+
+    buildStateTable(grid, teleMap, n, m);
+    propagateStates(grid, teleMap, n, m, l);
+
+    result ans=findMaxCustomerPath(grid, n, m);
+    cout<<"\nMax customers served: "<<ans.customers<<"\n"
+        <<"Energy used: "<<l-ans.energy<<"\n"
+        <<"Path:\n"<<ans.path<<endl;
+
+    return 0;
+}
