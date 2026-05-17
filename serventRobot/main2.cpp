@@ -171,6 +171,26 @@ void propagateStates(vector<vector<point> >& grid, map<pair<int,int>, pair<int,i
         }
 
         // Teleport moves
-
+        if(teleOut.count(make_pair(i,j))>0){
+            vector<pair<int,int> >& dests=teleOut[make_pair(i,j)];
+            for(size_t k=0; k<dests.size(); ++k){
+                int ni=dests[k].first;
+                int nj=dests[k].second;
+                if(ni >= 0 && ni<n && nj >= 0 && nj<m && grid[ni][nj].id!="X"){
+                    state cand=curState;   // teleport does not consume energy
+                    if(grid[ni][nj].id=="G") cand.customersVisited++;
+                    state& existing=grid[ni][nj].st;
+                    if(isInaccessible(existing) || cand.customersVisited>existing.customersVisited ||
+                       (cand.customersVisited==existing.customersVisited && cand.remainingEnergy>existing.remainingEnergy)
+                    ){
+                        existing=cand;
+                        existing.sourceX=i;
+                        existing.sourceY=j;
+                        existing.sourceTel=true;
+                        q.push(make_pair(ni, nj));
+                    }
+                }
+            }
+        }
     }
 }
