@@ -105,7 +105,7 @@ void createNextPoint(const vector<vector<point> >& map, vector<vector<valuePair>
 }
 
 void DFS(const vector<vector<point> >& map, vector<vector<valuePair> >& valueMap, const point current){
-    if(valueMap[current.x][current.y].energyLeft) createNextPoint(map, valueMap, current, current);
+    if(valueMap[current.x][current.y].energyLeft>0) createNextPoint(map, valueMap, current, current);
 }
 
 point findBest(const vector<vector<point> >& map, const vector<vector<valuePair> > valueMap){
@@ -121,7 +121,7 @@ point findBest(const vector<vector<point> >& map, const vector<vector<valuePair>
 vector<point> findPath(const vector<vector<point> >& map, const vector<vector<valuePair> >& valueMap){
     vector<point> path;
     path.push_back(findBest(map, valueMap));
-    while(valueMap[path.back().dx][path.back().dx].parent)
+    while(valueMap[path.back().x][path.back().y].parent)
         path.push_back(valueMap[path.back().dx][path.back().dx].parent);
     return path;
 }
@@ -134,7 +134,15 @@ void print(const vector<point>& path, valuePair best, int initEnergy){
         cout<<"("<<path[i].x<<","<<path[i].y<<")"<<" -> ";
         if(path[i].type==3) cout<<"T -> ";
     }
-    cout<<cout<<"("<<path[0].x<<","<<path[0].y<<")";
+    cout<<"("<<path[0].x<<","<<path[0].y<<")";
+}
+
+void printDebug(const vector<vector<point> >& map, const vector<vector<valuePair> >& valueMap, int n, int m){
+    for(int i=0; i<n; i++){
+        for(int j=0; i<m; j++){
+            cout<<
+        }
+    }
 }
 
 int main(){
